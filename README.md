@@ -22,7 +22,7 @@ Comparação de uso em [prototype master](http://ux-lab.softplan.com.br/testeAce
 - d: navegação por áreas 
 - f: navegação por formulários 
 - t: navegação por tabelas
-- : pausar
+- ctrl+alt+N: ativar e desativar NVDA
 
 [Documentação - Guia de navagação NVDA](https://www.nvaccess.org/files/nvda/documentation/userGuide.html?)
 
@@ -394,15 +394,7 @@ Data de concluso
 
 
 ## <a name="1-6">#</a> 1.6 Teste automatizado 
-Lorem ipsum dolor sit amet, consectetur adipisicing elit. Molestias necessitatibus autem, doloremque rerum possimus eaque dolorem mollitia hic quae nisi molestiae ab odit quibusdam commodi sint quo nesciunt enim! Ipsa?
- 
- Falha ao inserir o disco óptico virtual C:\Program Files\Oracle\VirtualBox\VBoxGuestAdditions.iso na máquina ubuntu 18.
-
-- [x] @mentions, #refs, [links](), **formatting**, and <del>tags</del> supported
-- [ ] list syntax required (any unordered or ordered list supported)
-- [ ] this is a complete item
-- [ ] this is an incomplete item
-
+Mostrar o uso do LightHouse
 
 
 
