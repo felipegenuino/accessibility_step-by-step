@@ -21,8 +21,12 @@ Comparação de uso em [prototype master](http://ux-lab.softplan.com.br/testeAce
 - h: navegação por títulos
 - d: navegação por áreas 
 - f: navegação por formulários 
-- t: navegação por tabelas
-- ctrl+alt+N: ativar e desativar NVDA
+- t: navegação por tabelas 
+- insert+M: ligar/desligar o rastreio do mouse
+- insert+s: Pausar a fala
+- insert+space: alternar modo de foco e navegação
+- inser+n instalar complementos 
+
 
 [Documentação - Guia de navagação NVDA](https://www.nvaccess.org/files/nvda/documentation/userGuide.html?)
 
