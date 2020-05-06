@@ -76,7 +76,7 @@ Identificamos
 
 
 #### O que podemos fazer?
-- Aplicar tag html corretamente, e adicionar role="region" caso precise deixar os blocos semanticos adicionando 
+- Aplicar tag html corretamente, e adicionar role="region" caso precise deixar os blocos semanticos
 - Implementar skip-to 
 
  
@@ -376,13 +376,119 @@ A ideia é navegar de forma mais rápida usando somente a tecla h, que faz salto
 ```
 
 
+### Região Atividades
+- abrir editor (active panel)
+
+```jsx
+<PreContent onClick={() => (context.data.started ? "" : context.callActionPanel())} started={context.data.started}>
+          <SearchIcon aria-hidden="true">
+            <Icon children="Search" />
+          </SearchIcon>
+
+          <InfoWrap> 
+            <span className="sr-only">Clique para: </span>
+            <Typography
+              noWrap
+              size={14}
+              color="neutralSecondaryAlt"
+              title={isNil(context.modelo) ? "Despacho" : context.model.categoria}
+            >
+              {isNil(context.modelo) ? "Despacho" : context.model.categoria}
+            </Typography>
+
+            <Typography
+              noWrap
+              size={14}
+              weight="semibold"
+              color="neutralPrimary"
+              title={`Clique para:  ${isNil(context.model) ? "Elaborar Documento" : context.model.nome}`}
+              aria-label={`Clique para:  ${isNil(context.model) ? "Elaborar Documento" : context.model.nome}`}
+            >
+              {isNil(context.model) ? "Elaborar Documento" : context.model.nome}
+            </Typography>
+          </InfoWrap>
+
+          {context.data.started
+                                && (
+                                <Button aria-label="clique para continuar edição" size="medium" variant="primary" onClick={() => context.callActionPanel()}>
+                                  Continuar
+                                </Button>
+                                )}
+
+          <LineRight />
+        </PreContent>
+```
+
+
+### Região documentos
+- lista de tags
+- links para pasta digital e outros documentos
+
+#### List de tags 
+
+ ![Printscreen apresentando lista de tags](src/card-documentos-listadetags.jpg) 
+
+```jsx
+<TagsWrapp> 
+    <Tags>
+        <ul className="tags-list" aria-label="Lista de tags" >
+            {context.bindedTags.length > 0
+            && context.bindedTags.map((item) => (
+                <li>
+                    <Tag
+                    key={item.id}
+                    color={item.background}
+                    label={item.name}
+                    />
+                </li>
+            ))}
+        </ul>
+    </Tags>
+    ...
+```
+```jsx
+const TagsWrapp = styled.section`
+    ... 
+    .tags-list{
+      list-style:none; 
+     display: flex;
+    }
+`;
+```
+
+##### links para pasta digital e outros documentos
+
+```jsx
+ <FolderWrapp>
+    {/* Link para pasta digital */}
+    <a  
+    href={`http://ux-lab.softplan.com.br/pastadigital/v3.2--SG/${digitalFolder.url}`}
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Abrir em outra página: Pasta digital"
+    >
+    <Icon aria-hidden="true"  children="Folder" />
+    <Typography size={14} color="neutralPrimary">Pasta digital</Typography>
+    </a>
+</FolderWrapp>
+```
 
 
 
 
-### Card region right
 
-Data de concluso
+
+### Região dados do processo
+- data de concluso
+- lista de partes
+- classe e assunto
+- número do processo
+- lista de tarjas
+
+##### Data de concluso
+
+
+ ![Printscreen focando na data de concluso, simulando mouse hover em cima do elemento data de concluso, onde a resposta é a exibição do title "Data de concluso: 11 de março de 2019"](src/card-dadosdoproceso-dataconcluso.jpg) 
 
 ```html
 <DateLine title={`Data de concluso: ${moment(context.data.data).format('D [de] MMMM')} ${moment(context.data.data).format('[de] YYYY')} `}>
@@ -392,6 +498,121 @@ Data de concluso
     </Typography> &nbsp;
     <Typography aria-hidden="true" size={11} weight="bold" color="neutralSecondaryAlt" component="span">{moment(context.data.data).format("YY")}</Typography>
 </DateLine>
+```
+
+
+##### Lista de partes
+ ![Printscreen focando na lista de partes dentro do card, onde está realçado em amarelo os textos "Parte Ativa e Parte Passiva"](src/card-dadosdoproceso-listadepartes.jpg) 
+
+Visualmente são dois elementos, pode ter até uma terceira parte, o magistrado, dessa forma temos uma lista, então precisamos colocar na semântica correta, ou seja, ul>li 
+o icone em svg pode ser escondido com um aria-hidden="true"
+
+```jsx
+ <ul aria-label="Lista de partes">
+    <li>
+        <Icon aria-hidden="true" size={10} children="Positive" />
+        <span class="sr-only">Parte ativa: &nbsp; </span>
+        <Typography title="Parte ativa" size={12} color="neutralSecondaryAlt" component="span">
+            {context.data.partes && context.data.partes.ativa.name}
+        </Typography>
+    </li>
+    <li>
+        <Icon size={10} children="Negative" />
+        <span class="sr-only">Parte Passiva: &nbsp; </span>
+        <Typography size={12} color="neutralSecondaryAlt" component="span">
+            {context.data.partes && context.data.partes.passiva.name}
+        </Typography>
+    </li>
+</ul>
+```
+```scss
+
+ ul{ 
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+        li{ padding-right: 10px;
+            svg{ margin-right: 3px }
+        } 
+}
+
+// span{
+//     white-space: nowrap;
+//     overflow: hidden;
+//     text-overflow: ellipsis;
+// }
+
+```
+
+
+##### classe e assunto
+```jsx
+ <Typography 
+    title={`Classe: ${context.data.classe}`} 
+    size={14} 
+    color="neutralSecondaryAlt" 
+    component="span">
+     <span class="sr-only">Classe:</span> {context.data.classe}
+</Typography>
+     <span aria-hidden="true" >  &nbsp;-&nbsp; </span>
+<Typography 
+    title={`Assunto: ${context.data.assunto}`} 
+    size={14} 
+    color="neutralSecondary" 
+    weight="semibold" 
+    component="span"><span class="sr-only">Assunto:</span> {context.data.assunto}
+</Typography>
+          
+```
+
+
+#### número do processo
+```jsx
+<Numero title={`Número do processo: ${number[0]}`} >
+    <Typography size={12} color="neutralSecondaryAlt" weight="bold" component="span">
+        <span class="sr-only">Número do processo: &nbsp; </span> {number[0]}
+    </Typography> 
+    <Typography size={12} color="neutralSecondaryAlt" component="span">
+        /  {number[1]}
+    </Typography> 
+</Numero>
+
+```
+```jsx
+const Numero = styled.div`
+    margin-right: 6px;
+    display: inherit;
+` 
+```
+
+#### Tarjas  
+```jsx
+<TarjaLista aria-label="Lista de tarjas">
+    {context.bindedTarjas
+        && context.bindedTarjas.map((tarja, index) => (
+            <li>
+            <Stamp
+                key={index}
+                label={tarja.name}
+                textColor={tarja.color}
+                backgroundColor={tarja.background}
+            />
+            </li>
+        )
+    )}
+</TarjaLista>
+```
+
+```jsx
+const TarjaLista = styled.ul`
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  li {
+    padding-right: 0px !important;
+  }
+`;
 ```
 
 
